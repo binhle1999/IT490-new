@@ -27,6 +27,11 @@ function registerUser($fname, $username, $email, $password)
 		exit(1);
 	}
 	echo "Connection Established".PHP_EOL;
+	$fullname = trim($fname) . ' ' . trim($lname);
+	$username = strtolower(trim($username));
+	$email = trim($email); 
+	$answer1 = strtolower(trim($answer1)); 
+	$answer2 = strtolower(trim($answer2));
 	
     $query = "INSERT INTO `Project`.`user` (`name`, `username`, `email`, `password`, `Security Question 1`, `Security Answer 1`,  `Security Question 2`, Security Answer 2`) VALUES ('$fullname', '$username', '$email', '$password', '$securityq1', '$answer1', '$securityq2', $answer2)";
     
