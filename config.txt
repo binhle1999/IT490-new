@@ -1,0 +1,27 @@
+sudo apt install php7.4-cli
+sudo apt install php7.4
+sudo apt-get install -y php-amqp
+
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+
+php -r "if (hash_file('sha384', 'composer-setup.php') === '906a84df04cea2aa72f40b5f787e49f22d4c2f19492ac310e8cba5b96ac8b64115ac402c8cd292b8a03482574915d1a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+
+php composer-setup.php
+
+php -r "unlink('composer-setup.php');"
+sudo mv composer.phar /usr/local/bin/composer
+cd..
+cd /usr/bin/local/bin
+chmod a+x composer
+
+cd
+cd IT490-new
+cd db
+nano composer.json (lmk when you get to this)
+
+sudo apt-get install php-curl
+
+this has to be done in the db directory
+(dont do whatever is below in root or do not use sudo)
+composer update
+composer install
