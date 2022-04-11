@@ -12,12 +12,12 @@ require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 
-function doRegister($fname, $username, $email, $password)
+function registerUser($fname, $username, $email, $password)
 {
     $hostname = 'localhost';
     $dbuser = 'root';
     $dbpass = 'admin';
-    $dbname = 'project';
+    $dbname = 'Project';
     $dbport = "3306";
     $conn = mysqli_connect($hostname, $dbuser, $dbpass, $dbname, $dbport);
 	
@@ -28,40 +28,87 @@ function doRegister($fname, $username, $email, $password)
 	}
 	echo "Connection Established".PHP_EOL;
 	
-    $query = "INSERT INTO `project`.`users` (`userid`, `first_name`, `username`, `email`, `password`) VALUES ('123', '$fname', '$username', '$email', '$password')";
-    
-//    $query = "INSERT INTO `Project`.`user` (`first_name`, `username`, `email`, `password`) VALUES ('bob', 'bob', 'bob@gmail.com', 'bobby')";
+    $query = "INSERT INTO `Project`.`user` (`name`, `username`, `email`, `password`, `Security Question 1`, `Security Answer 1`,  `Security Question 2`, Security Answer 2`) VALUES ('$fullname', '$username', '$email', '$password', '$securityq1', '$answer1', '$securityq2', $answer2)";
     
     if (mysqli_query($conn, $query)) {
   	echo "New record created successfully";
-  	return true;
+  	return 1;
 }   else {
   	echo "Error: " . $query . "<br>" . mysqli_error($conn);
+  	return 0;
 }
-
 mysqli_close($conn);
-    
-    //$sql = "INSERT INTO `PROJECT`.`Users` (`userid`, `name`, `username`, `email`, `password`, `Security Answer 1`, `Security Answer 2`) VALUES (123, '$username', '$fname + " "$lname', '$email', '$password', '$seca1', '$seca2')";
-
 }
 
-function requestProcessor($request)
+function loginUser($username, $password)
+{
+    $hostname = 'localhost';
+    $dbuser = 'root';
+    $dbpass = 'database';
+    $dbname = 'Project';
+    $dbport = "3306";
+    $conn = mysqli_connect($hostname, $dbuser, $dbpass, $dbname, $dbport);
+	
+    if (!$conn)
+	{
+		echo "Error connecting to database: ".$conn->connect_errno.PHP_EOL;
+		exit(1);
+	}
+	echo "Connection Established".PHP_EOL;
+	
+	$username = strtolower(trim($username));
+	
+	// lookup username and password in database
+	$sql = "SELECT * FROM user WHERE username='$username' AND password='$password'";
+	// check username and password
+	
+	$result = mysqli_query($conn, $sql);
+	if($result == false)
+	{
+		echo "Not authorized";
+		$result=0;
+	}
+	if (mysqli_num_rows($result)==0)
+	{
+		echo "NO GOOD";
+	}
+	else
+	{
+		while($row=mysqli_fetch_array($result, MYSQLI_ASSOC))
+		{
+			if ($username=$row['username'] && $password=['password'])
+			{
+				echo "Authorized";
+				return 1;
+			}
+			else
+			{
+				echo "No Good";
+				return 2;
+			}
+		}
+	}
+}
+
+function processor($request)
 {
   echo "received request";
   var_dump($request);
   if(!isset($request['type']))
   {
-    echo "ERROR: unsupported message type";
-    //return "ERROR: unsupported message type";
+    return "ERROR: unsupported message type";
   }
-  return doRegister($request['fname'], $request['username'], $request['email'], $request['password']);
-  return array("returnCode" => '0', 'message'=>"Server received request and processed");
+  switch ($request['type'])
+  {
+    case "login":
+      return loginUser($request['username'],$request['password']);
+    case "register":
+      return registerUser($request['fname'], $request['username'], $request['email'], $request['password']);
+  }
 }
-
 $server = new rabbitMQServer("testDatabase.ini","testServer");
-
-echo "testRabbitMQServer BEGIN";
-$server->process_requests('requestProcessor');
-echo "testRabbitMQServer END";
+echo "LISTENING";
+$server->process_requests('processor');
+echo "DONE";
 exit();
 ?>
