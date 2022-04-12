@@ -16,8 +16,8 @@ function registerUser($fname, $username, $email, $password)
 {
     $hostname = 'localhost';
     $dbuser = 'root';
-    $dbpass = 'admin';
-    $dbname = 'Project';
+    $dbpass = 'database';
+    $dbname = 'test';
     $dbport = "3306";
     $conn = mysqli_connect($hostname, $dbuser, $dbpass, $dbname, $dbport);
 	
@@ -33,7 +33,7 @@ function registerUser($fname, $username, $email, $password)
 	$answer1 = strtolower(trim($answer1)); 
 	$answer2 = strtolower(trim($answer2));
 	
-    $query = "INSERT INTO `Project`.`user` (`name`, `username`, `email`, `password`, `Security Question 1`, `Security Answer 1`,  `Security Question 2`, Security Answer 2`) VALUES ('$fullname', '$username', '$email', '$password', '$securityq1', '$answer1', '$securityq2', $answer2)";
+    $query = "INSERT INTO `test`.`user` (`userid`, `email`, `password`, `name`) VALUES ('$username', '$email', '$password', '$fullname')";
     
     if (mysqli_query($conn, $query)) {
   	echo "New record created successfully";
@@ -50,7 +50,7 @@ function loginUser($username, $password)
     $hostname = 'localhost';
     $dbuser = 'root';
     $dbpass = 'database';
-    $dbname = 'Project';
+    $dbname = 'test';
     $dbport = "3306";
     $conn = mysqli_connect($hostname, $dbuser, $dbpass, $dbname, $dbport);
 	
@@ -64,7 +64,7 @@ function loginUser($username, $password)
 	$username = strtolower(trim($username));
 	
 	// lookup username and password in database
-	$sql = "SELECT * FROM user WHERE username='$username' AND password='$password'";
+	$sql = "SELECT * FROM user WHERE userid='$username' AND password='$password'";
 	// check username and password
 	
 	$result = mysqli_query($conn, $sql);
@@ -81,7 +81,7 @@ function loginUser($username, $password)
 	{
 		while($row=mysqli_fetch_array($result, MYSQLI_ASSOC))
 		{
-			if ($username=$row['username'] && $password=['password'])
+			if ($username=$row['userid'] && $password=['password'])
 			{
 				echo "Authorized";
 				return 1;
@@ -111,7 +111,47 @@ function processor($request)
       return registerUser($request['fname'], $request['username'], $request['email'], $request['password']);
   }
 }
-$server = new rabbitMQServer("testDatabase.ini","testServer");
+
+$ip=["192.168.194.3", "192.168.194.117", "192.168.194.181"];
+$num=0;
+for ($i=0; $i<count($ip); $i++)
+{
+	$host = $ip[$i];
+	exec("ping -c 2 " . $host, $output, $result);
+
+	if ($result==0)
+	{
+        	echo PHP_EOL. "[*] ".$host." is Online".PHP_EOL;
+		break;
+	}
+	else
+	{
+        	echo PHP_EOL. "[*] ".$host." is Offline".PHP_EOL;
+        	$host = "off";
+	}
+}
+if ($host == "192.168.194.3")
+{
+	$node="testDatabase.ini"; 
+	echo $node .PHP_EOL;
+}
+if($host == "192.168.194.117")
+{
+	$node="testDatabase2.ini"; 
+	echo $node .PHP_EOL;
+}
+if($host == "192.168.194.181")
+{
+	$node="testDatabase3.ini"; 
+	echo $node .PHP_EOL;
+}
+if($host == "off")
+{
+	$node="No Machine is Online WTF"; 
+	echo $node .PHP_EOL;
+}
+
+$server = new rabbitMQServer($node,"testServer");
 echo "LISTENING";
 $server->process_requests('processor');
 echo "DONE";
