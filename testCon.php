@@ -26,12 +26,12 @@ for ($i=0; $i<count($ip); $i++)
 }
 if ($host == "192.168.194.3")
 {
-	$node="testRabbit.ini"; 
+	$node="testRabbitMQ.ini"; 
 	echo $node .PHP_EOL;
 }
 if($host == "192.168.194.117")
 {
-	$node="testRabbit2.ini"; 
+	$node="testRabbitMQ2.ini"; 
 	echo $node .PHP_EOL;
 }
 if($host == "192.168.194.181")
