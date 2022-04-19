@@ -39,7 +39,7 @@ function generate_complex_search_url($preferences, $ingredientsAtHome, $type): s
     $ingredientsAtHome = explode(", ", $ingredientsAtHome["IngredientsAtHome"]);
     $url .= "&includeIngredients=";
     for ($i = 0; $i < count($ingredientsAtHome) - 1; $i++) {
-        $url .= $ingredientsAtHome[$i] . ",";
+        $url .= $ingredientsAtHome[$i] . " %2C%20 ";
     }
     $url .= $ingredientsAtHome[count($ingredientsAtHome) - 1];
     $url .= "&type=" . $type;
