@@ -55,9 +55,6 @@ $request['type'] = "login";
 $request['username'] = $_POST["username"];
 $request['password'] = $_POST["password"];
 $response = $client->send_request($request);
-//$errFlag = False;
-//$nameErr = False;
-//$passErr = False;
 
 if($response == 1){
 	//tell user creds are bad
@@ -73,11 +70,7 @@ if($response == 1){
         header("Location: loginpage.php");
 	$msg = "Unauthorized.\nTry Again";
         echo "<script type='text/javascript'>alert('$msg');</script>";
-	//$_SESSION["username"] = $_POST["username"];
-	//$_SESSION["user_id"] = $response["user_id"];
-	//header("Location: loginpage.php");
 }
-//header("Location: home.php");
 exit();		
 }
 
