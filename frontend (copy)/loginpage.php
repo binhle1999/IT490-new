@@ -48,7 +48,7 @@ if($host == "off")
 	$node="No Machine is Online WTF"; 
 	echo $node .PHP_EOL;
 }
-$client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+$client = new rabbitMQClient($node,"testServer");
 
 $request = array();
 $request['type'] = "login";
