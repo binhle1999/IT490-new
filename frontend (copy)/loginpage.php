@@ -60,8 +60,6 @@ $response = $client->send_request($request);
 //$passErr = False;
 
 if($response == 1){
-	//$error = date("Y-m-d") . "  " . date("h:i:sa") . "  --- Frontend --- " . "Error: failed to login using Username = " . $_POST["uname"] . " and Password = " . $_POST["psw"] . "\n";
-	//log_event($error);
 	//tell user creds are bad
 	//$msg = "Unauthorized.\nTry Again";
 	$_SESSION["username"] = $_POST["username"];
@@ -72,8 +70,6 @@ if($response == 1){
 	
 	
 } else{
-	//$event = date("Y-m-d") . "  " . date("h:i:sa") . "Login successful using Username = " . $_POST["username"] . " and Password = " . $_POST["password"] . "\n";
-	//log_event($event);
         header("Location: loginpage.php");
 	$msg = "Unauthorized.\nTry Again";
         echo "<script type='text/javascript'>alert('$msg');</script>";
@@ -85,30 +81,6 @@ if($response == 1){
 exit();		
 }
 
-/*
-if(empty($name)){
-	$errFlag = True;
-	$nameErr = True;
-}
-if(empty($pass)){
-	$errFlag = True;
-	$passErr = True;
-}
-if($errFlag){
-	$obj->nameErr = $nameErr;
-	$obj->passErr = $passErr;
-}else{
-	$response = sendRabbit(array('type' => 'login', 'data' => array('username' => $name, 'password' => sha1($pass))));
-	$obj->response = $response;
-	if($response == 0){
-		session_start();
-		$_SESSION['user'] = $name;
-		header("Location: localhost/frontend/home.php");
-	}
-}
-echo json_encode($obj);
-header("Location: localhost/frontend/home.php");
-*/
 ?>
 
 <!DOCTYPE html>
