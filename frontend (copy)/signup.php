@@ -11,43 +11,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="../css/main.css" type="text/css" rel="stylesheet">
     <link rel="shortcut icon" href="../img/seedling-solid.svg"/>
-
-    <!--Script
-    <script>
-        function HandleRegisterResponse(response)
-        {
-            var res = response;
-            var text = JSON.parse(res);
-            console.log(text);
-	    if (text.output == "1")
-            {
-            	alert(text.message);            	
-            	location.href = 'login.html';
-            }
-        }
-        
-        function SendRegisterRequest(fname,lname,username,email,password)
-        {
-            var request = new XMLHttpRequest();
-            var fname = document.getElementById("fname").value;
-            var lname = document.getElementById("lname").value;
-            var username = document.getElementById("username").value;
-            var email = document.getElementById("email").value;
-            var password = document.getElementById("password").value;
-            request.open("POST","../testRabbitMQClient.php",true);
-            request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-            request.onreadystatechange = function ()
-            {
-                
-                if ((this.readyState == 4)&&(this.status == 200))
-                {
-                    HandleRegisterResponse(this.responseText);
-                }		
-            }
-            request.send("type=register&fname="+fname+"&lname="+lname+"&username="+username+"&email="+email+"&password="+password);
-        }
-    </script>
--->
 </head>
  
 <body>
