@@ -14,12 +14,6 @@ $preferences["DietType"] = $_POST["diet"];
 $preferences["Intolerances"] = $_POST["intolerances"];
 $ingredientsAtHome["IngredientsAtHome"] = $_POST["ingredients"];
 
-/*function saveRecipe()
-{
-	$str = "lap was here";
-	return $str;
-}*/
-
 function complex_search($preferences, $ingredientsAtHome)
 {
     $url = "https://api.spoonacular.com/recipes/complexSearch?diet=";
@@ -87,17 +81,6 @@ $client = new rabbitMQClient($node,"testServer");
 $request['type'] = "search";
 $request['url'] = complex_search($preferences, $ingredientsAtHome);
 $response = $client->send_request($request);
-
-//echo '<pre>';
-//print_r($response);
-//echo '<pre>';
-
-/*if($response == 1){
-	
-	
-} else{
-        
-}*/
 
 }
 ?>
