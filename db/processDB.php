@@ -81,7 +81,7 @@ function loginUser($username, $password)
 	{
 		while($row=mysqli_fetch_array($result, MYSQLI_ASSOC))
 		{
-			if ($username=$row['userid'] && $password=['password'])
+			if ($username=$row['userid'] && password_verify($password, $row['password']))
 			{
 				echo "Authorized";
 				return 1;
