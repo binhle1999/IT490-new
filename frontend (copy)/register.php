@@ -12,7 +12,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $ip=["192.168.194.3", "192.168.194.117", "192.168.194.181"];
-$num=0;
+
 for ($i=0; $i<count($ip); $i++)
 {
 	$host = $ip[$i];

@@ -50,11 +50,13 @@ if($host == "off")
 }
 $client = new rabbitMQClient($node,"testServer");
 $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
-
+$password = $_POST["password"];
+$hashed_pass = password_hash($password, PASSWORD_DEFAULT);
 $request = array();
 $request['type'] = "login";
 $request['username'] = $_POST["username"];
-$request['password'] = $_POST["password"];
+$request['password'] = $password;
+$request['hash'] = $hashed_pass;
 $response = $client->send_request($request);
 //$errFlag = False;
 //$nameErr = False;
