@@ -38,43 +38,45 @@
 <div class="container col-md-6">
     <h1>Register</h1>
     <hr/>
-    <form action="register.php" method="POST">
+    <form action="register.php" onsubmit="return checkForm()" method="POST">
         <div class="row g-3">
             <div class="col-md-6 input-fld">
-                <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" aria-label="First name">
+                <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" aria-label="First name" required>
             </div>
             <div class="col-md-6 input-fld">
-                <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" aria-label="Last name">
+                <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" aria-label="Last name" required>
             </div>
             <div class="col-12 input-fld">
-              <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+              <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
             </div>
             <div class="col-12 input-fld">
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
             </div>
             <div class="col-12 input-fld">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                 <label style="color: grey;">*Must include special characters</label>
             </div>
             <div class="col-12 input-fld">
             <label for="securityq1" style="color: grey;">Choose a security question</label>
-                <select class="form-control" id="securityq1" name="securityq1">
+                <select class="form-control" name="securityq1" required>
+                <option selected="selected" disabled="disabled" value="">Select One</option>
                 <option value="Name of first pet">Name of your first pet?</option>
                 <option value="Favorite Color">Your favorite color?</option>
                 </select>   
             </div>
             <div class="col-12 input-fld">
-              <input type="text" class="form-control" id="answer1" name="answer1" placeholder="Question 1 Answer">
+              <input type="text" class="form-control" id="answer1" name="answer1" placeholder="Question 1 Answer" required>
             </div>
             <div class="col-12 input-fld">
             <label for="securityq1" style="color: grey;">Choose a security question</label>
-                <select class="form-control" id="securityq2" name="securityq2">
+                <select class="form-control" name="securityq2" required>
+                <option selected="selected" disabled="disabled" value="">Select One</option>
                 <option value="Father's Middle name">Father's middle name?</option>
                 <option value="Model of first car">Model of first car?</option>
                 </select>
             </div>
             <div class="col-12 input-fld">
-              <input type="text" class="form-control" id="answer2" name="answer2" placeholder="Question 2 Answer">
+              <input type="text" class="form-control" id="answer2" name="answer2" placeholder="Question 2 Answer" required>
             </div>
              		
             <div class="col-12">
@@ -84,7 +86,6 @@
     </form>
 </div>
 </body>
-
 <!--Footer-->
 <footer class="text-center text-white sticky-bottom container-fluid footer" style="background-color: #7d9988;">
     <!-- Grid container -->
