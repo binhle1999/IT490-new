@@ -132,13 +132,7 @@ $response = $client->send_request($request);
             <a class="nav-link" href="home.php">Home</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="forum.html">Forum</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="whatsin.php">What's In My Fridge?</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="profile.php">Profile</a>
+            <a class="nav-link" href="profile.php">Calorie Calculator</a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="logout.php"">Logout</a>
