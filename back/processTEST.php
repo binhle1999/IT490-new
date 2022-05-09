@@ -14,49 +14,7 @@ require_once('rabbitMQLib.inc');
 
 function doRegister($username, $password, $fname, $lname, $email, $seca1, $seca2)
 {
-
-$ip=["192.168.194.3", "192.168.194.117", "192.168.194.181"];
-for ($i=0; $i<count($ip); $i++)
-{
-	$host = $ip[$i];
-	exec("ping -c 2 " . $host, $output, $result);
-
-	if ($result==0)
-	{
-        	echo PHP_EOL. "[*] ".$host." is Online".PHP_EOL;
-		break;
-	}
-	else
-	{
-        	echo PHP_EOL. "[*] ".$host." is Offline".PHP_EOL;
-        	$host = "off";
-	}
-}
-if ($host == "192.168.194.3")
-{
-	$node="testRabbitMQ.ini";
-	$node2="testDatabase.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "192.168.194.117")
-{
-	$node="testRabbitMQ2.ini";
-	$node2="testDatabase2.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "192.168.194.181")
-{
-	$node="testRabbitMQ3.ini";
-	$node2="testDatabase3.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "off")
-{
-	$node="No Machine is Online WTF"; 
-	echo $node .PHP_EOL;
-}
-
-$client = new rabbitMQClient($node2,"testServer");
+$client = new rabbitMQClient("testDatabase.ini","testServer");
 $request = array();
 $request['type'] = "register";
 $request['username'] = $username;
@@ -83,49 +41,7 @@ exit();
 
 function doLogin($username,$password)
 {
-
-$ip=["192.168.194.3", "192.168.194.117", "192.168.194.181"];
-for ($i=0; $i<count($ip); $i++)
-{
-	$host = $ip[$i];
-	exec("ping -c 2 " . $host, $output, $result);
-
-	if ($result==0)
-	{
-        	echo PHP_EOL. "[*] ".$host." is Online".PHP_EOL;
-		break;
-	}
-	else
-	{
-        	echo PHP_EOL. "[*] ".$host." is Offline".PHP_EOL;
-        	$host = "off";
-	}
-}
-if ($host == "192.168.194.3")
-{
-	$node="testRabbitMQ.ini";
-	$node2="testDatabase.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "192.168.194.117")
-{
-	$node="testRabbitMQ2.ini";
-	$node2="testDatabase2.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "192.168.194.181")
-{
-	$node="testRabbitMQ3.ini";
-	$node2="testDatabase3.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "off")
-{
-	$node="No Machine is Online WTF"; 
-	echo $node .PHP_EOL;
-}
-
-$client = new rabbitMQClient($node2,"testServer");
+$client = new rabbitMQClient("testDatabase.ini","testServer");
 $request = array();
 $request['type'] = "login";
 $request['username'] = $username;
@@ -144,6 +60,34 @@ if($response == 1){
 	}
 }
 
+function api_call($url)
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            'Content-type: application/json'
+        ],
+    ]);
+
+    $response = curl_exec($curl);
+    $errorText = curl_error($curl);
+
+    curl_close($curl);
+
+    return $errorText ? ["errorText" => "cURL Error #:" . $errorText] : $response;
+}
+
+
+
 function requestProcessor($request)
 {
   echo "received request";
@@ -158,55 +102,14 @@ function requestProcessor($request)
     {
       return doLogin($request['username'],$request['password']);
     }
-    case "validate_session":
-      return doValidate($request['sessionId']);
+    case "search":
+      return json_decode(api_call($request['url']));
     case "register":
       return doRegister($request['username'], $request['password'], $request['fname'], $request['lname'], $request['email'], $request['answer1'], $request['answer2']);
   }
 }
 
-$ip=["192.168.194.3", "192.168.194.117", "192.168.194.181"];
-for ($i=0; $i<count($ip); $i++)
-{
-	$host = $ip[$i];
-	exec("ping -c 2 " . $host, $output, $result);
-
-	if ($result==0)
-	{
-        	echo PHP_EOL. "[*] ".$host." is Online".PHP_EOL;
-		break;
-	}
-	else
-	{
-        	echo PHP_EOL. "[*] ".$host." is Offline".PHP_EOL;
-        	$host = "off";
-	}
-}
-if ($host == "192.168.194.3")
-{
-	$node="testRabbitMQ.ini";
-	$node2="testDatabase.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "192.168.194.117")
-{
-	$node="testRabbitMQ2.ini";
-	$node2="testDatabase2.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "192.168.194.181")
-{
-	$node="testRabbitMQ3.ini";
-	$node2="testDatabase3.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "off")
-{
-	$node="No Machine is Online WTF"; 
-	echo $node .PHP_EOL;
-}
-
-$server = new rabbitMQServer($node,"testServer");
+$server = new rabbitMQServer("testRabbitMQ.ini","testServer");
 
 
 echo "LISTENING";
