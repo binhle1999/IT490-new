@@ -42,7 +42,7 @@ function complex_search($preferences, $ingredientsAtHome)
     $url .= "&number=5&apiKey=" . "cb8cebfd5d1d4e1b88f4f7e9e4f95f8a";
     return $url;
 }
-/*
+
 $ip=["192.168.194.3", "192.168.194.117", "192.168.194.181"];
 $num=0;
 for ($i=0; $i<count($ip); $i++)
@@ -80,9 +80,9 @@ if($host == "off")
 {
 	$node="No Machine is Online WTF"; 
 	echo $node .PHP_EOL;
-}*/
+}
 
-$client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+$client = new rabbitMQClient($node,"testServer");
 
 $request['type'] = "search";
 $request['url'] = complex_search($preferences, $ingredientsAtHome);
