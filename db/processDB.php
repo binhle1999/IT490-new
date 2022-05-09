@@ -64,7 +64,7 @@ function loginUser($username, $password)
 	$username = strtolower(trim($username));
 	
 	// lookup username and password in database
-	$sql = "SELECT * FROM user WHERE userid='$username' AND password='$password'";
+	$sql = "SELECT * FROM user WHERE userid='$username'";
 	// check username and password
 	
 	$result = mysqli_query($conn, $sql);
