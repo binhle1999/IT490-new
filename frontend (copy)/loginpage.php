@@ -6,73 +6,42 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
+include("functions.php");
 ini_set('display_errors',1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-$ip=["192.168.194.3", "192.168.194.117", "192.168.194.181"];
-$num=0;
-for ($i=0; $i<count($ip); $i++)
-{
-	$host = $ip[$i];
-	exec("ping -c 2 " . $host, $output, $result);
-
-	if ($result==0)
-	{
-        	echo PHP_EOL. "[*] ".$host." is Online".PHP_EOL;
-		break;
-	}
-	else
-	{
-        	echo PHP_EOL. "[*] ".$host." is Offline".PHP_EOL;
-        	$host = "off";
-	}
-}
-if ($host == "192.168.194.3")
-{
-	$node="testRabbitMQ.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "192.168.194.117")
-{
-	$node="testRabbitMQ2.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "192.168.194.181")
-{
-	$node="testRabbitMQ3.ini"; 
-	echo $node .PHP_EOL;
-}
-if($host == "off")
-{
-	$node="No Machine is Online WTF"; 
-	echo $node .PHP_EOL;
-}
-$client = new rabbitMQClient($node,"testServer");
+$client = new rabbitMQClient("testRabbitMQ.ini","testServer");
 
 $request = array();
 $request['type'] = "login";
 $request['username'] = $_POST["username"];
 $request['password'] = $_POST["password"];
 $response = $client->send_request($request);
+//$errFlag = False;
+//$nameErr = False;
+//$passErr = False;
 
 if($response == 1){
-	//tell user creds are bad
-	//$msg = "Unauthorized.\nTry Again";
+	//$error = date("Y-m-d") . "  " . date("h:i:sa") . "  --- Frontend --- " . "Error: failed to login using Username = " . $_POST["uname"] . " and Password = " . $_POST["psw"] . "\n";
+	//log_event($error);
+	//response received, user authorized
 	$_SESSION["username"] = $_POST["username"];
-        //$_SESSION["user_id"] = $response["user_id"];
         header("Location: home.php");
-
-	//echo "<script type='text/javascript'>alert('$msg');</script>";
 	
 	
 } else{
+	//$event = date("Y-m-d") . "  " . date("h:i:sa") . "Login successful using Username = " . $_POST["username"] . " and Password = " . $_POST["password"] . "\n";
+	//log_event($event);
+	
+	//user not found
         header("Location: loginpage.php");
 	$msg = "Unauthorized.\nTry Again";
         echo "<script type='text/javascript'>alert('$msg');</script>";
-}
-exit();		
+
 }
 
+exit();		
+}
 ?>
 
 <!DOCTYPE html>
@@ -98,11 +67,8 @@ exit();
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="signup.html">Register</a>
+                        <a class="nav-link" href="signup.php">Register</a>
                     </li>
                 </ul>
             </div>
