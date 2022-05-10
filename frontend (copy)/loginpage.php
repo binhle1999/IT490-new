@@ -62,9 +62,7 @@ if($response == 1){
 	
 } else{
 	//user not found
-        header("Location: loginpage.php");
-	$msg = "Unauthorized.\nTry Again";
-        echo "<script type='text/javascript'>alert('Unauthorized.\nTry Again');</script>";
+        echo ("<script language='javascript'>window.alert('Unauthorized'); window.location.href='loginpage.php';</script>");
 
 }
 
