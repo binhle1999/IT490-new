@@ -164,7 +164,8 @@ $response = $client->send_request($request);
 	echo "<h6>Dish Summary: </h6>" . "\n" . $response["results"][$i]["summary"]."</br></br>\n";
 	echo "<h6>Cook & Prep Time: </h6>" . "\n" . $response["results"][$i]["readyInMinutes"]."</br></br>\n";
 	echo "<h6>Servings: </h6>" . "\n" . $response["results"][$i]["servings"]."</br></br>\n";
-	echo "<h6>Link: </h6>" . "\n" . $response["results"][$i]["sourceUrl"]."</br></br>";
+	$link = strval($response["results"][$i]["sourceUrl"]);
+	echo "<h6>Link: </h6>" . "\n" . $link ."</br></br>";
 	echo ("<button onclick=\"saveRecipe()\"> Favorite Recipe </button>")."</br></br>\n";
 	echo '</div>';
 	
